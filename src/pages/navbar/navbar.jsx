@@ -43,9 +43,6 @@ function Navbar() {
       {/* Mobile Menu */}
       {menuOpen && (
         <div className="md:hidden bg-gray-800 px-6 pt-4 pb-6 flex flex-col gap-3">
-          <Link to="/" onClick={() => setMenuOpen(false)} className="hover:text-gray-300 transition">Home</Link>
-          <Link to="/tasks" onClick={() => setMenuOpen(false)} className="hover:text-gray-300 transition">Tasks</Link>
-          <Link to="/profile" onClick={() => setMenuOpen(false)} className="hover:text-gray-300 transition">Profile</Link>
           <button
             onClick={handleLogout}
             className="bg-red-500 hover:bg-red-600 px-4 py-2 rounded-md transition"
