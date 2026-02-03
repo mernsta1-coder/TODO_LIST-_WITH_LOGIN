@@ -2,9 +2,19 @@ import { Link } from "react-router-dom";
 import { FaEye } from "react-icons/fa";
 import { useState } from "react";
 
-function Auth({ type, title, fields = [], buttonText, linkText, linkText2, onSubmit, textLabel, onClick, pattern }) {
-  const [showpassword, setshowpassword] = useState(false);
-  const [confirm,setconfirm] = useState(false);
+function Auth({
+  type,
+  title,
+  fields = [],
+  buttonText,
+  linkText,
+  linkText2,
+  onSubmit,
+  textLabel,
+  onClick,
+}) {
+  const [showPassword, setShowPassword] = useState(false);
+  const [confirm, setConfirm] = useState(false);
 
   const pathto = type === "register" ? "/" : "/register";
 
@@ -12,57 +22,80 @@ function Auth({ type, title, fields = [], buttonText, linkText, linkText2, onSub
     e.preventDefault();
     const formData = Object.fromEntries(new FormData(e.target));
     if (onSubmit) onSubmit(formData);
-  }
-
+  };
 
   return (
-    <div className="min-h-200px w-70 mt-25 bg-[radial-gradient(circle,_rgba(238,174,202,1)_0%,_rgba(148,187,233,1)_100%)]  m-auto rounded-2xl">
-      <h1 className="text-white text-center text-2xl font-bold">{title}</h1>
+    <div className="min-h-screen flex items-center justify-center px-4 bg-gradient-to-br from-pink-200 to-blue-300">
+      <div className="w-full max-w-md bg-white/10 backdrop-blur-md rounded-2xl p-6 sm:p-8 shadow-lg">
+        <h1 className="text-white text-2xl sm:text-3xl font-bold text-center mb-6">
+          {title}
+        </h1>
 
-      <form onSubmit={handleSubmit}>
-        {fields.map((f) => (
-          <div key={f.name} className=" ">
-            <div className="block text-center">
-              <div className="relative inline-block text-center mt-2">
-                <input
-                  type={f.name === "password" ? (showpassword? "text" : "password"):
-                    f.name ==="confirmpassword"?(confirm?"text" : "password") : f.type }
-                  placeholder={f.placeholder} name={f.name}
-                  mi  nLength={f.minLength} maxLength={f.maxlength}
-                  pattern={f.pattern} required={f.required}
-                  className="border-b-2 rounded-xl w-60 mt-2 text-white text-center" />
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {fields.map((f) => (
+            <div key={f.name} className="relative">
+              <input
+                type={
+                  f.name === "password"
+                    ? showPassword
+                      ? "text"
+                      : "password"
+                    : f.name === "confirmpassword"
+                    ? confirm
+                      ? "text"
+                      : "password"
+                    : f.type
+                }
+                placeholder={f.placeholder}
+                name={f.name}
+                minLength={f.minLength}
+                maxLength={f.maxLength}
+                pattern={f.pattern}
+                required={f.required}
+                className="w-full px-4 py-3 rounded-xl text-center placeholder-white bg-white/20 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
 
-                {(f.name === "password" ||f.name === "confirmpassword") && (
-                  <span
-                    onClick={() => f.name === "password"?setshowpassword(!showpassword):setconfirm(!confirm)}
-                    
-                    className="absolute right-2 top-2 cursor-pointer text-white mt-1"
-                  >
-                    <FaEye />
-                  </span>
-                )}
-              </div>
+              {(f.name === "password" || f.name === "confirmpassword") && (
+                <span
+                  onClick={() =>
+                    f.name === "password"
+                      ? setShowPassword(!showPassword)
+                      : setConfirm(!confirm)
+                  }
+                  className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-white"
+                >
+                  <FaEye />
+                </span>
+              )}
             </div>
-          </div>
-        ))}
-        <div className=" text-center block mt-4">
+          ))}
 
-          <button type="submit" onClick={onClick} className="text-white bg-blue-600 p-1 pl-2 pr-2 rounded-r-sm">{buttonText}</button>
+          <button
+            type="submit"
+            onClick={onClick}
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-semibold transition"
+          >
+            {buttonText}
+          </button>
+        </form>
 
-        </div>
-      </form>
+        {linkText && (
+          <p className="text-white text-center mt-4 text-sm">
+            <span>{textLabel} </span>
+            <Link to={pathto} className="text-blue-300 hover:underline">
+              {linkText}
+            </Link>
+          </p>
+        )}
 
-      {linkText && (
-        <p className="text-white m-3">
-          <p className=" inline">{textLabel}</p><Link to={pathto} className="text-blue-600">{linkText}</Link>
-        </p>
-      )}
-
-      {linkText2 && (
-        <p className="text-white m-4 pb-2">
-          <Link to="/forgot" className="text-blue-600">{linkText2}</Link>
-        </p>
-      )}
+        {linkText2 && (
+          <p className="text-white text-center mt-2 text-sm">
+            <Link to="/forgot" className="text-blue-300 hover:underline">
+              {linkText2}
+            </Link>
+          </p>
+        )}
+      </div>
     </div>
   );
 }

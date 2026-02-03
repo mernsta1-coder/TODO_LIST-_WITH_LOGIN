@@ -40,7 +40,6 @@ function Admin() {
   // Delete user
   const deleteUser = async (id) => {
     if (!window.confirm("Delete this user?")) return;
-
     try {
       await API.delete(`/users/${id}`);
       loadUsers(); // Refresh list
@@ -56,59 +55,62 @@ function Admin() {
   };
 
   return (
-    <div style={{ fontFamily: "Arial, sans-serif" }}>
+    <div className="min-h-screen bg-gray-50 font-sans">
       {/* Navbar */}
-      <nav style={{ padding: "10px 20px", background: "#222", color: "#fff", display: "flex", justifyContent: "space-between" }}>
-        <span style={{ fontWeight: "bold" }}>Admin Panel</span>
+      <nav className="bg-gray-800 text-white flex justify-between items-center px-6 py-4 shadow">
+        <span className="font-bold text-lg">Admin Panel</span>
         <button
           onClick={logout}
-          style={{ background: "#ff4d4f", color: "#fff", border: "none", padding: "5px 10px", cursor: "pointer", borderRadius: "4px" }}
+          className="bg-red-600 hover:bg-red-700 px-3 py-1 rounded transition"
         >
           Logout
         </button>
       </nav>
 
       {/* Users Table */}
-      <div style={{ padding: "20px" }}>
-        <h2>All Users</h2>
+      <div className="p-6 max-w-7xl mx-auto">
+        <h2 className="text-2xl font-semibold mb-4">All Users</h2>
+
         {loading ? (
           <p>Loading users...</p>
         ) : (
-          <table border="1" cellPadding="10" cellSpacing="0" style={{ width: "100%", borderCollapse: "collapse" }}>
-            <thead style={{ background: "#f0f0f0" }}>
-              <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Role</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {users.length > 0 ? (
-                users.map((user) => (
-                  <tr key={user._id}>
-                    <td>{user.name}</td>
-                    <td>{user.email}</td>
-                    <td>{user.role}</td>
-                    <td>
-                      <button
-                        onClick={() => deleteUser(user._id)}
-                        style={{ background: "#ff4d4f", color: "#fff", border: "none", padding: "5px 10px", cursor: "pointer", borderRadius: "4px" }}
-                      >
-                        Delete
-                      </button>
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-[600px] border border-gray-200 rounded-lg overflow-hidden">
+              <thead className="bg-gray-100">
+                <tr>
+                  <th className="py-2 px-4 text-left">Name</th>
+                  <th className="py-2 px-4 text-left">Email</th>
+                  <th className="py-2 px-4 text-left">Role</th>
+                  <th className="py-2 px-4 text-left">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {users.length > 0 ? (
+                  users.map((user) => (
+                    <tr key={user._id} className="hover:bg-gray-50">
+                      <td className="py-2 px-4">{user.name}</td>
+                      <td className="py-2 px-4">{user.email}</td>
+                      <td className="py-2 px-4">{user.role}</td>
+                      <td className="py-2 px-4">
+                        <button
+                          onClick={() => deleteUser(user._id)}
+                          className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded transition"
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="4" className="text-center py-4">
+                      No users found
                     </td>
                   </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="4" style={{ textAlign: "center" }}>
-                    No users found
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+                )}
+              </tbody>
+            </table>
+          </div>
         )}
       </div>
     </div>
